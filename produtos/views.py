@@ -1,8 +1,11 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework import viewsets
+from .models import Produto, Categoria
+from .serializers import ProdutoSerializer, CategoriaSerializer
 
-def home(request):
-    return HttpResponse("Bem-vindo à BSI4 Store! <br/> <a href='/about'>Sobre</a>")
+class CategoriaViewSet(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
 
-def about(request):
-    return HttpResponse("O fim esta próximo <br/> <a href='/'>Home</a>")
+class ProdutoViewSet(viewsets.ModelViewSet):
+  queryset = Produto.objects.all()
+  serializer_class = ProdutoSerializer
