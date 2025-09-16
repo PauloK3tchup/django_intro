@@ -2,6 +2,7 @@ from rest_framework import viewsets, filters
 from .models import Produto, Categoria
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import ProdutoSerializer, CategoriaSerializer
+from .filters import ProdutoFilter
 
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
@@ -12,7 +13,10 @@ class ProdutoViewSet(viewsets.ModelViewSet):
   serializer_class = ProdutoSerializer
   
   filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-  filterset_fields = ['preco', 'estoque','categoria__nome']  # Filtragem exata por preço e estoque
+  
+  filterset_fields = {
+    'estoque': ['exact', 'gte', 'lte'],  # permite filtro exato, maior ou igual e menor ou igual
+  }  
   search_fields = ['nome']  # Busca textual
   ordering_fields = ['nome', 'preco']  # Ordenação
   ordering = ['id']  # Ordenação padrão
